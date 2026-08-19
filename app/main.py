@@ -6,7 +6,11 @@ from app.database import engine, Base, get_session
 from app.models import Note
 from app.schemas import NoteCreate, NoteOut
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 app = FastAPI(title="Notes API")
+Instrumentator().instrument(app).expose(app)
+
 
 
 @app.on_event("startup")
