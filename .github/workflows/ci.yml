@@ -44,6 +44,7 @@ jobs:
           format: table
           severity: CRITICAL,HIGH
           exit-code: 1
+          trivyignores: .trivyignore
 
   security-lint:
     runs-on: ubuntu-latest
