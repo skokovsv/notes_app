@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class NoteCreate(BaseModel):
@@ -9,10 +9,16 @@ class NoteCreate(BaseModel):
 
 
 class NoteOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: str
     title: str
     content: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+
+class NoteListResponse(BaseModel):
+    items: list[NoteOut]
+    total: int
+    page: int
+    page_size: int

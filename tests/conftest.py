@@ -5,14 +5,13 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from app.main import app
 from app.database import Base, get_session
+from app.config import API_KEY
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
 @pytest_asyncio.fixture
 async def client():
-    # Отдельный движок для каждого теста —in-memory SQLite,
-    # чтобы не трогать настоящий PostgreSQL и не гонять Docker ради тестов
     test_engine = create_async_engine(TEST_DATABASE_URL, echo=False)
     test_session_maker = async_sessionmaker(test_engine, expire_on_commit=False)
 
@@ -31,3 +30,8 @@ async def client():
 
     app.dependency_overrides.clear()
     await test_engine.dispose()
+
+
+@pytest.fixture
+def auth_headers():
+    return {"X-API-Key": API_KEY}
